@@ -1,0 +1,107 @@
+{
+	"id": "7fb03fd6-b10c-2052-d3cb-65c7c0b63fc7",
+	"name": "BTCS show profile info",
+	"description": "",
+	"order": [
+		"bfbdaa23-a3c0-a00f-9ac2-6a8da60e1724",
+		"0a64e4f0-49a2-7ade-00df-fd5e7c9a47ed",
+		"dd9d4bcf-4ba6-a2b1-827e-db0f87496067"
+	],
+	"folders": [],
+	"timestamp": 1469425974195,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "0a64e4f0-49a2-7ade-00df-fd5e7c9a47ed",
+			"headers": "Authorization: {{Token}}\nContent-Type: application/json\n",
+			"url": "{{URL}}/eapi/v1/users/myprofile",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\n\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Your test name\"] = jsonData.userEmail === \"anppucc@bt.com\";",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469427576047,
+			"name": "Get profile info",
+			"description": "",
+			"collectionId": "7fb03fd6-b10c-2052-d3cb-65c7c0b63fc7",
+			"responses": []
+		},
+		{
+			"id": "bfbdaa23-a3c0-a00f-9ac2-6a8da60e1724",
+			"headers": "",
+			"url": "{{URL}}/eapi/v1/token",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "7fb03fd6-b10c-2052-d3cb-65c7c0b63fc7",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "parkingapp",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "nuDnZt4UmqtvIGYCyAHZB2",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "anppucc@bt.com",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "test123",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "Get EAPI Token",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1469425982922,
+			"version": 2,
+			"responses": [],
+			"tests": "var jsonData = JSON.parse(responseBody);\nvar token = \"bearer \" + jsonData.access_token;\nvar refreshToken = jsonData.refresh_token;\n\npostman.setGlobalVariable(\"Token\", token);\npostman.setGlobalVariable(\"RefreshToken\", refreshToken)\n\n\n\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\n\ntests[\"Access token is passed\"] = responseBody.has(\".issued\");",
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "dd9d4bcf-4ba6-a2b1-827e-db0f87496067",
+			"headers": "Authorization: {{Token}}\nContent-Type: application/json\n",
+			"url": "{{URL}}/eapi/v1/payments/my?pageNumber=1&pageSize=10&orderColumn=CreatedOn",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\n\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"is there a total amount\"] = jsonData.total;\ntests[\"is there a list\"] = jsonData.items;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469428698026,
+			"name": "Get transactions info",
+			"description": "",
+			"collectionId": "7fb03fd6-b10c-2052-d3cb-65c7c0b63fc7",
+			"responses": []
+		}
+	]
+}

@@ -1,0 +1,149 @@
+{
+	"id": "05f54c3e-6806-d534-b473-3615fad6c6b3",
+	"name": "BTCS Switch PPU",
+	"description": "",
+	"order": [
+		"86fcfd76-c6c2-d6aa-21de-b8ce5137954f",
+		"199ed052-575f-e250-2668-94c0f06a37b2",
+		"49b59644-4b85-e3c2-4550-f6c2f1869e16",
+		"d3343214-a35d-2447-e2e6-256f336bad7f",
+		"46b79e6d-1ebc-0bf2-2f1c-012b9b2572b9"
+	],
+	"folders": [],
+	"timestamp": 1469428356897,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "199ed052-575f-e250-2668-94c0f06a37b2",
+			"headers": "Authorization: {{Token}}\nContent-Type: application/json\n",
+			"url": "{{URL}}/eapi/v1/agreements/payPerUse",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"is pay per use enabled\"] = jsonData.isPayPerUseEnabled === false;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469428864214,
+			"name": "Disable pay per use",
+			"description": "",
+			"collectionId": "05f54c3e-6806-d534-b473-3615fad6c6b3",
+			"responses": [],
+			"rawModeData": "{\n    OrderRef:\"6635c3bc00244b0eae86f8939076a4b2\"\n}"
+		},
+		{
+			"id": "46b79e6d-1ebc-0bf2-2f1c-012b9b2572b9",
+			"headers": "Authorization: {{Token}}\nContent-Type: application/json\n",
+			"url": "{{URL}}/eapi/v1/users/myprofile",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\n\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"isPayPerUseEnabled\"] = jsonData.isPayPerUseEnabled === true;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469430177097,
+			"name": "Get profile info2",
+			"description": "",
+			"collectionId": "05f54c3e-6806-d534-b473-3615fad6c6b3",
+			"responses": []
+		},
+		{
+			"id": "49b59644-4b85-e3c2-4550-f6c2f1869e16",
+			"headers": "Authorization: {{Token}}\nContent-Type: application/json\n",
+			"url": "{{URL}}/eapi/v1/users/myprofile",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\n\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"isPayPerUseEnabled\"] = jsonData.isPayPerUseEnabled === false;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469430159449,
+			"name": "Get profile info",
+			"description": "",
+			"collectionId": "05f54c3e-6806-d534-b473-3615fad6c6b3",
+			"responses": []
+		},
+		{
+			"id": "86fcfd76-c6c2-d6aa-21de-b8ce5137954f",
+			"headers": "",
+			"url": "{{URL}}/eapi/v1/token",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "05f54c3e-6806-d534-b473-3615fad6c6b3",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "parkingapp",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "nuDnZt4UmqtvIGYCyAHZB2",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "anppucc@bt.com",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "test123",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "Get EAPI Token",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1469428798710,
+			"version": 2,
+			"responses": [],
+			"tests": "var jsonData = JSON.parse(responseBody);\nvar token = \"bearer \" + jsonData.access_token;\nvar refreshToken = jsonData.refresh_token;\n\npostman.setGlobalVariable(\"Token\", token);\npostman.setGlobalVariable(\"RefreshToken\", refreshToken)\n\n\n\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\n\ntests[\"Access token is passed\"] = responseBody.has(\".issued\");",
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "d3343214-a35d-2447-e2e6-256f336bad7f",
+			"headers": "Authorization: {{Token}}\nContent-Type: application/json\n",
+			"url": "{{URL}}/eapi/v1/agreements/payPerUse",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"is pay per use enabled\"] = jsonData.isPayPerUseEnabled === true;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469428915833,
+			"name": "Enable pay per use",
+			"description": "",
+			"collectionId": "05f54c3e-6806-d534-b473-3615fad6c6b3",
+			"responses": [],
+			"rawModeData": "{\"ShouldEnable\":true}"
+		}
+	]
+}

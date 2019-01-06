@@ -1,0 +1,107 @@
+{
+	"id": "448a9b57-c428-fb4d-d904-9dab357269a3",
+	"name": "BTCS Payment Details",
+	"description": "",
+	"order": [
+		"092c5973-21c9-a744-e40c-0d66985f8330",
+		"e909f370-8e2e-72ea-31a8-3674b66a22ab",
+		"376d0527-44ea-e775-8209-8ebdea1f8d61"
+	],
+	"folders": [],
+	"timestamp": 1469429141815,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "092c5973-21c9-a744-e40c-0d66985f8330",
+			"headers": "",
+			"url": "{{URL}}/eapi/v1/token",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "448a9b57-c428-fb4d-d904-9dab357269a3",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "parkingapp",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "nuDnZt4UmqtvIGYCyAHZB2",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "anppucc@bt.com",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "test123",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "Get EAPI Token",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1469429159768,
+			"version": 2,
+			"responses": [],
+			"tests": "var jsonData = JSON.parse(responseBody);\nvar token = \"bearer \" + jsonData.access_token;\nvar refreshToken = jsonData.refresh_token;\n\npostman.setGlobalVariable(\"Token\", token);\npostman.setGlobalVariable(\"RefreshToken\", refreshToken)\n\n\n\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\n\ntests[\"Access token is passed\"] = responseBody.has(\".issued\");",
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "376d0527-44ea-e775-8209-8ebdea1f8d61",
+			"headers": "Authorization: {{Token}}\n",
+			"url": "{{URL}}/eapi/v1/payments/5eaf1333-d44b-433b-815f-f306450e5cf5/sendReceipt?preferredLocale=en",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "\ntests[\"Status code is 204\"] = responseCode.code === 204;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469429713993,
+			"name": "Send Payment Details",
+			"description": "",
+			"collectionId": "448a9b57-c428-fb4d-d904-9dab357269a3",
+			"responses": []
+		},
+		{
+			"id": "e909f370-8e2e-72ea-31a8-3674b66a22ab",
+			"headers": "Authorization: {{Token}}\n",
+			"url": "{{URL}}/eapi/v1/payments/my/details/5eaf1333-d44b-433b-815f-f306450e5cf5",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "\ntests[\"Status code is 200\"] = responseCode.code === 200;\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"payment Identity\"] = jsonData.paymentIdentity === \"5eaf1333-d44b-433b-815f-f306450e5cf5\";\ntests[\"transaction Number\"] = jsonData.transactionNumber === \"10341463\";\ntests[\"maskedCreditCardNumber\"] = jsonData.maskedCreditCardNumber == \"541300******0000\";\ntests[\"vat\"] = jsonData.vat == 25;\ntests[\"vatAmount\"] = jsonData.vatAmount == 18;\ntests[\"fromDateTime\"] = jsonData.fromDateTime == \"2016-05-02T08:00:00Z\";\ntests[\"toDateTime\"] = jsonData.toDateTime == \"2016-05-02T09:30:00Z\";\ntests[\"licensePlate\"] = jsonData.licensePlate == \"NP55\";\ntests[\"amount\"] = jsonData.amount == 90;\ntests[\"tollDomainName\"] = jsonData.tollDomainName == \"TAGROUP 2\";\ntests[\"paymentStatus\"] = jsonData.paymentStatus == \"Accepted\";\ntests[\"cSCustomerIdentity\"] = jsonData.cSCustomerIdentity == \"TAGROUP\";\ntests[\"companyName\"] = jsonData.companyName == \"TAGROUP CompName\";\ntests[\"companyNumber\"] = jsonData.companyNumber == \"TAGROUP number\";\ntests[\"companySiteUrl\"] = jsonData.companySiteUrl == \"TAGROUP url\";\ntests[\"customerIdentity\"] = jsonData.customerIdentity == \"Customer_56812\";\ntests[\"paymentChargeType\"] = jsonData.paymentChargeType == \"CreditCard\";\ntests[\"productType\"] = jsonData.productType == \"Visit\";\ntests[\"paymentBatchIdentity\"] = jsonData.paymentBatchIdentity == \"0498d48a-1c0b-4f5f-91b3-543947fa400c\";\ntests[\"customerFullName\"] = jsonData.customerFullName == \"anppucc\";\ntests[\"type\"] = jsonData.type == \"PayPerUseCreditCard\";\ntests[\"paymentDate\"] = jsonData.paymentDate == \"2016-06-30T08:12:37Z\";\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469429592511,
+			"name": "Show Payment Details",
+			"description": "",
+			"collectionId": "448a9b57-c428-fb4d-d904-9dab357269a3",
+			"responses": []
+		}
+	]
+}

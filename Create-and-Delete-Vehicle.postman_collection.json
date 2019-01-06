@@ -1,0 +1,107 @@
+{
+	"id": "be14f8b6-b360-8883-c49e-52c422963986",
+	"name": "BTCS Create/Delete Vehicle",
+	"description": "",
+	"order": [
+		"6576933a-aa28-1c5e-b99c-e0ff00ea8d36",
+		"ae661a82-af16-a26a-6cba-aada08fcda18",
+		"89894ef4-b25c-ec6f-7deb-2c4f4313d34f"
+	],
+	"folders": [],
+	"timestamp": 1469425745209,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "6576933a-aa28-1c5e-b99c-e0ff00ea8d36",
+			"headers": "",
+			"url": "{{URL}}/eapi/v1/token",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "be14f8b6-b360-8883-c49e-52c422963986",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "parkingapp",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "nuDnZt4UmqtvIGYCyAHZB2",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "anppucc@bt.com",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "test123",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "Get EAPI Token",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1469425818935,
+			"version": 2,
+			"responses": [],
+			"tests": "var jsonData = JSON.parse(responseBody);\nvar token = \"bearer \" + jsonData.access_token;\nvar refreshToken = jsonData.refresh_token;\n\npostman.setGlobalVariable(\"Token\", token);\npostman.setGlobalVariable(\"RefreshToken\", refreshToken)\n\n\n\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\n\ntests[\"Access token is passed\"] = responseBody.has(\".issued\");",
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "89894ef4-b25c-ec6f-7deb-2c4f4313d34f",
+			"headers": "Authorization: {{Token}}\nContent-Type: application/json\n",
+			"url": "{{URL}}/eapi/v1/vehicles/{{CreatedVehicle}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\n\n\n\nvar jsonData = JSON.parse(responseBody);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469006447194,
+			"name": "Delete Vehicle",
+			"description": "",
+			"collectionId": "be14f8b6-b360-8883-c49e-52c422963986",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "ae661a82-af16-a26a-6cba-aada08fcda18",
+			"headers": "Authorization: {{Token}}\nContent-Type: application/json\n",
+			"url": "{{URL}}/eapi/v1/vehicles",
+			"preRequestScript": "var randomInt = Math.floor((Math.random() * 1000) + 1);\n\nvar vehicleLpn = 'KO' + randomInt\n\n\n\npostman.setGlobalVariable(\"Lpn\", vehicleLpn);",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\n\n\n\n\nvar jsonData = JSON.parse(responseBody);\nCreatedVehicle = jsonData.vehicleIdentity;\n\npostman.setGlobalVariable(\"CreatedVehicle\", CreatedVehicle);\n\ntests[\"Is Vehicle Identity present\"] = jsonData.vehicleIdentity;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1469006393735,
+			"name": "Create Vehicle",
+			"description": "",
+			"collectionId": "be14f8b6-b360-8883-c49e-52c422963986",
+			"responses": [],
+			"rawModeData": "{\"licensePlate\":\"{{Lpn}}\"}"
+		}
+	]
+}
